@@ -31,7 +31,7 @@ std::vector<Member*> MemberManager::getActiveMembers() const {
 std::vector<Member*> MemberManager::getMembersWithOverdueLoans() {
     std::vector<Member*> result;
     for (auto& m : members_) {
-        if (!m.hasOverdueLoans()) {
+        if (m.hasOverdueLoans()) {
             result.push_back(&m);
         }
     }
@@ -51,10 +51,11 @@ bool MemberManager::deactivateMember(const std::string& id) {
 bool MemberManager::updateEmail(const std::string& id,
                                 const std::string& email)
 {
-    bool found = false;
     for (auto& m : members_) {
-        m.setEmail(email);
-        if (m.getID() == id) found = true;
+        if (m.getID() == id) {
+            m.setEmail(email);
+            return true;
+        }
     }
-    return found;
+    return false;
 }
