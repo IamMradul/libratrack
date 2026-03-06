@@ -63,8 +63,15 @@ std::vector<Book*> SearchEngine::searchByAuthor(const std::string& query) const 
 
 std::vector<Book*> SearchEngine::filterByGenre(const std::string& genre) const {
     std::vector<Book*> results;
+    std::string query = genre;
+    std::transform(query.begin(), query.end(), query.begin(), ::tolower);
+
     for (auto& book : catalog_) {
-        if (book.getGenre() == genre) {
+        std::string book_genre = book.getGenre();
+        std::transform(book_genre.begin(), book_genre.end(),
+                       book_genre.begin(), ::tolower);
+
+        if (book_genre == query) {
             results.push_back(const_cast<Book*>(&book));
         }
     }
